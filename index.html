@@ -1,41 +1,234 @@
-<style>
-  /* Responsive Styles */
-  @media (max-width: 768px) {
-    #second-page {
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      text-align: center;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>frut00s</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Patrick+Hand&display=swap" rel="stylesheet">
+
+  <style>
+    /* ---------- reset & base ---------- */
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #fff6cf;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow: auto; /* allow scrolling on small screens */
     }
+
+    /* ---------- first page (cover) ---------- */
+    #first-page {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+      z-index: 50;
+      background: rgba(255,246,207,1);
+    }
+
+    #first-page h1 {
+      font-family: 'Patrick Hand', sans-serif;
+      font-size: clamp(28px, 6vw, 50px);
+      margin: 0;
+    }
+
+    #play-button {
+      padding: 18px 36px;
+      font-size: clamp(18px, 5vw, 30px);
+      border: none;
+      border-radius: 12px;
+      background-color: #ffb6c1;
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+      touch-action: manipulation;
+    }
+
+    /* ---------- second page layout ---------- */
+    #second-page {
+      display: none; /* shown by JS (class 'show') */
+      min-height: 100vh;
+      padding: 40px;
+      display: flex;
+      gap: 30px;
+      align-items: center;
+      justify-content: center;
+    }
+    #second-page.show { display: flex; }
+
+    /* Left (image) and right (texts) columns */
+    .left, .right {
+      flex: 1 1 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .left { padding: 10px; }
+    .right { padding: 10px; flex-direction: column; gap: 12px; }
 
     .bouquet {
-      max-width: 80%;
-      transform: translateY(0);
-      margin-bottom: 20px;
-    }
-
-    .congrats-text {
-      position: static;
-      transform: none;
-      font-size: 40px;
-      margin-bottom: 15px;
-    }
-
-    .message-text {
-      position: static;
-      transform: none;
       width: 100%;
-      font-size: 20px;
-      line-height: 1.5;
-      margin-top: 10px;
+      max-width: 675px;
+      height: auto;
+      object-fit: contain;
+      transform: translateY(5%);
+      display: block;
+    }
+
+    /* Congrats headline */
+    .congrats-text {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(36px, 6vw, 70px);
+      color: black;
+      margin: 0;
+      line-height: 1;
+      text-align: left;
+      width: 100%;
+    }
+
+    /* Message text (handwritten feel) */
+    .message-text {
+      width: 100%;
+      max-width: 700px;
+      font-family: 'Patrick Hand', sans-serif;
+      font-size: clamp(16px, 3.2vw, 30px);
+      line-height: 1.45;
+      color: #2c2c2c;
+      text-align: left;
+
+      /* decorative textured text effect (keeps legible) */
+      background: repeating-linear-gradient(
+        45deg,
+        #2c2c2c,
+        #2c2c2c 1px,
+        #3a3a3a 2px,
+        #2c2c2c 3px
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0.4px 0.4px 0px rgba(0,0,0,0.18);
+      padding: 6px 0;
+      box-sizing: border-box;
     }
 
     .signature {
-      font-size: 18px;
-      margin-top: 15px;
-      text-align: center;
-      display: block;
+      font-family: 'Patrick Hand', sans-serif;
+      font-size: clamp(14px, 2.4vw, 24px);
+      align-self: flex-end;
+      margin-top: 8px;
+      color: #2c2c2c;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background: repeating-linear-gradient(
+        45deg,
+        #2c2c2c,
+        #2c2c2c 1px,
+        #3a3a3a 2px,
+        #2c2c2c 3px
+      );
+      text-shadow: 0.4px 0.4px 0 rgba(0,0,0,0.18);
     }
-  }
-</style>
+
+    audio { display: none; }
+
+    /* ---------- responsive: stack on small screens ---------- */
+    @media (max-width: 900px) {
+      #second-page {
+        padding: 20px;
+        flex-direction: column;
+        align-items: center;
+      }
+      .left, .right {
+        width: 100%;
+        justify-content: center;
+      }
+      .right {
+        align-items: center;
+        text-align: center;
+      }
+      .congrats-text {
+        text-align: center;
+      }
+      .message-text {
+        text-align: center;
+        max-width: 100%;
+      }
+      .signature { align-self: center; }
+      #first-page { padding: 16px; }
+      #play-button { padding: 14px 28px; }
+    }
+
+    /* very small phones */
+    @media (max-width: 420px) {
+      .bouquet { transform: none; max-width: 90vw; }
+      .congrats-text { font-size: clamp(28px, 8vw, 48px); }
+      .message-text { font-size: clamp(14px, 3.8vw, 20px); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- First Page -->
+  <div id="first-page">
+    <h1>Tap to Play</h1>
+    <button id="play-button">▶ Play</button>
+  </div>
+
+  <!-- Second Page -->
+  <div id="second-page" aria-hidden="true">
+    <div class="left">
+      <img src="bouquet.png" alt="Crayon Bouquet" class="bouquet">
+      <audio id="bg-audio" loop>
+        <source src="conglatulations.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+
+    <div class="right" role="region" aria-label="congratulations message">
+      <h2 class="congrats-text">Congratulations, Mohamed!</h2>
+
+      <div class="message-text">
+        Finally, the time has come—your exams are all finished! As a gift, here’s a flower for you, hahaha.
+        It may only appear virtually, but it comes from the bottom of my heart, my friend, hahaha.
+        You really did great, and all your hard work will surely pay off.
+        Keep striving, keep reaching for more, because this is just the beginning of bigger things.
+        Cheers to your success now and to the many more successes ahead, doctor!
+      </div>
+
+      <div class="signature">-Elle, your super pretty pro max friend</div>
+    </div>
+  </div>
+
+  <script>
+    const playBtn = document.getElementById('play-button');
+    const first = document.getElementById('first-page');
+    const second = document.getElementById('second-page');
+    const audio = document.getElementById('bg-audio');
+
+    playBtn.addEventListener('click', () => {
+      // hide cover and show second page
+      first.style.display = 'none';
+      second.classList.add('show');
+      second.setAttribute('aria-hidden', 'false');
+
+      // attempt to play audio; mobile browsers allow play after a user gesture
+      if (audio) {
+        audio.currentTime = 0;
+        audio.play().catch(err => {
+          // audio may be blocked on some browsers — silently ignore
+          console.log('audio play blocked:', err);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
