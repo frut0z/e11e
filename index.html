@@ -1,85 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>frut00s</title>
-
+  
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Patrick+Hand&display=swap" rel="stylesheet">
 
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
+      margin: 0;
+      height: 100vh;
       font-family: Arial, sans-serif;
-      background: #fff6cf;
-      min-height: 100vh;
-      overflow-x: hidden;
+      overflow: hidden;
     }
 
-    /* First Page (Play Cover) */
+    /* First Page Styles */
     #first-page {
-      position: fixed;
-      inset: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background: #fff6cf;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
-      z-index: 50;
+      z-index: 10;
     }
 
     #first-page h1 {
+      font-size: 50px;
       font-family: 'Patrick Hand', sans-serif;
-      font-size: clamp(28px, 6vw, 50px);
+      margin-bottom: 20px;
     }
 
     #play-button {
-      padding: 15px 30px;
-      font-size: clamp(18px, 5vw, 28px);
+      padding: 20px 40px;
+      font-size: 30px;
       border: none;
       border-radius: 10px;
       background-color: #ffb6c1;
       cursor: pointer;
     }
 
-    /* Second Page (Main Content) */
+    /* Second Page Styles */
     #second-page {
-      display: none;
-      min-height: 100vh;
+      display: none; /* hidden until play button clicked */
+      margin: 0;
+      height: 100vh;
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      gap: 40px;
-      padding: 40px;
-      flex-wrap: wrap; /* important for responsiveness */
+      background-color: #fff6cf;
+      padding: 0 50px;
+      position: relative;
     }
-
-    #second-page.show { display: flex; }
 
     .bouquet {
-      width: 100%;
-      max-width: 550px; /* 🔥 10% bigger than before */
+      max-width: 675px; /* stays same on laptop */
       height: auto;
+      transform: translateY(5%);
     }
 
-    .right {
-      max-width: 700px;
-      text-align: left;
+    audio {
+      display: none;
     }
 
     .congrats-text {
+      position: absolute;
+      top: 20%;
+      left: 70%;
+      transform: translateX(-50%);
+      font-size: 70px;
+      font-weight: bold;
       font-family: 'Great Vibes', cursive;
-      font-size: clamp(36px, 6vw, 70px);
       color: black;
-      margin-bottom: 15px;
+      text-align: center;
+      white-space: nowrap;
     }
 
     .message-text {
+      position: absolute;
+      top: 32%;
+      left: 70%;
+      transform: translateX(-50%);
+      width: 650px;
+      font-size: 30px;
       font-family: 'Patrick Hand', sans-serif;
-      font-size: clamp(16px, 3vw, 28px);
-      line-height: 1.5;
+      color: #2c2c2c;
+      text-align: center;
+      line-height: 1.4;
+
+      background: repeating-linear-gradient(
+        45deg,
+        #2c2c2c,
+        #2c2c2c 1px,
+        #3a3a3a 2px,
+        #2c2c2c 3px
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0.5px 0.5px 0px rgba(0,0,0,0.2);
+    }
+
+    .signature {
+      display: block;
+      margin-top: 20px;
+      font-size: 24px;
+      font-family: 'Patrick Hand', sans-serif;
+      text-align: right;
       color: #2c2c2c;
 
       background: repeating-linear-gradient(
@@ -91,39 +123,48 @@
       );
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0.5px 0.5px 0 rgba(0,0,0,0.2);
+      text-shadow: 0.5px 0.5px 0px rgba(0,0,0,0.2);
     }
 
-    .signature {
-      display: block;
-      margin-top: 20px;
-      font-size: clamp(14px, 2.5vw, 22px);
-      font-family: 'Patrick Hand', sans-serif;
-      text-align: right;
-
-      background: repeating-linear-gradient(
-        45deg,
-        #2c2c2c,
-        #2c2c2c 1px,
-        #3a3a3a 2px,
-        #2c2c2c 3px
-      );
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0.5px 0.5px 0 rgba(0,0,0,0.2);
-    }
-
-    audio { display: none; }
-
-    /* Responsive Mobile View */
-    @media (max-width: 900px) {
+    /* 📱 Responsive for Mobile */
+    @media (max-width: 768px) {
       #second-page {
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
         padding: 20px;
         text-align: center;
       }
-      .right { text-align: center; }
-      .signature { text-align: center; }
+
+      .bouquet {
+        max-width: 85%; /* smaller on mobile */
+        transform: translateY(0);
+        margin-bottom: 20px;
+      }
+
+      .congrats-text {
+        position: static;
+        transform: none;
+        font-size: 40px;
+        margin-bottom: 15px;
+        white-space: normal;
+      }
+
+      .message-text {
+        position: static;
+        transform: none;
+        width: 100%;
+        font-size: 20px;
+        line-height: 1.5;
+        margin-top: 10px;
+      }
+
+      .signature {
+        font-size: 18px;
+        margin-top: 15px;
+        text-align: center;
+        display: block;
+      }
     }
   </style>
 </head>
@@ -137,40 +178,41 @@
 
   <!-- Second Page -->
   <div id="second-page">
-    <div class="left">
+    <!-- Left side: Bouquet with music -->
+    <div>
       <img src="bouquet.png" alt="Crayon Bouquet" class="bouquet">
-      <audio id="bg-audio" loop>
+
+      <!-- Hidden Audio Player -->
+      <audio id="bg-audio" autoplay loop>
         <source src="conglatulations.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
       </audio>
     </div>
 
-    <div class="right">
-      <div class="congrats-text">Congratulations, Mohamed!</div>
-      <div class="message-text">
-        Finally, the time has come—your exams are all finished! As a gift, here’s a flower for you, hahaha.
-        It may only appear virtually, but it comes from the bottom of my heart, my friend, hahaha.
-        You really did great, and all your hard work will surely pay off.
-        Keep striving, keep reaching for more, because this is just the beginning of bigger things.
-        Cheers to your success now and to the many more successes ahead, doctor!
-        <span class="signature">-Elle, your super pretty pro max friend</span>
-      </div>
+    <!-- Upper Right: Congratulations -->
+    <div class="congrats-text">
+      Congratulations, Mohamed!
+    </div>
+
+    <!-- Message + Signature -->
+    <div class="message-text">
+      Finally, the time has come—your exams are all finished! As a gift, here’s a flower for you, hahaha.
+      It may only appear virtually, but it comes from the bottom of my heart, my friend, hahaha.
+      You really did great, and all your hard work will surely pay off.
+      Keep striving, keep reaching for more, because this is just the beginning of bigger things.
+      Cheers to your success now and to the many more successes ahead, doctor!
+
+      <span class="signature">-Elle, your super pretty pro max friend</span>
     </div>
   </div>
 
   <script>
-    const playBtn = document.getElementById('play-button');
-    const firstPage = document.getElementById('first-page');
-    const secondPage = document.getElementById('second-page');
-    const audio = document.getElementById('bg-audio');
+    document.getElementById("play-button").addEventListener("click", () => {
+      document.getElementById("first-page").style.display = "none";
+      document.getElementById("second-page").style.display = "flex";
 
-    playBtn.addEventListener('click', () => {
-      firstPage.style.display = 'none';
-      secondPage.classList.add('show');
-      if (audio) {
-        audio.currentTime = 0;
-        audio.play().catch(err => console.log('Audio play blocked:', err));
-      }
+      const audio = document.getElementById("bg-audio");
+      audio.play();
     });
   </script>
 </body>
