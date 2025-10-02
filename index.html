@@ -60,7 +60,7 @@
     }
 
     .bouquet {
-      max-width: 675px; /* stays same on laptop */
+      width: 675px; /* ✅ Fixed size for laptop/desktop */
       height: auto;
       transform: translateY(5%);
     }
@@ -126,8 +126,8 @@
       text-shadow: 0.5px 0.5px 0px rgba(0,0,0,0.2);
     }
 
-    /* 📱 Responsive for Mobile */
-    @media (max-width: 768px) {
+    /* ✅ Mobile Responsive */
+    @media (max-width: 600px) {
       #second-page {
         flex-direction: column;
         justify-content: center;
@@ -137,33 +137,32 @@
       }
 
       .bouquet {
-        max-width: 85%; /* smaller on mobile */
+        width: 85%; /* Shrinks on phones only */
         transform: translateY(0);
-        margin-bottom: 20px;
       }
 
       .congrats-text {
-        position: static;
+        position: relative;
+        top: auto;
+        left: auto;
         transform: none;
         font-size: 40px;
-        margin-bottom: 15px;
-        white-space: normal;
+        margin-top: 20px;
       }
 
       .message-text {
-        position: static;
+        position: relative;
+        top: auto;
+        left: auto;
         transform: none;
         width: 100%;
         font-size: 20px;
-        line-height: 1.5;
-        margin-top: 10px;
+        margin-top: 15px;
       }
 
       .signature {
-        font-size: 18px;
-        margin-top: 15px;
         text-align: center;
-        display: block;
+        font-size: 18px;
       }
     }
   </style>
